@@ -1,5 +1,5 @@
 # Party game
-Objective: Be the first player to reach the specified number of points 
+Objective: Be the first player to reach the specified number of points
 
 Player count: 5-10
 
@@ -15,17 +15,21 @@ Points are gained by correctly guessing which answer is the hot seat player's an
 
 # Scoring
 
-The player in the hot seat gains 3 points as long as one other player guesses their answer correctly. 
+The player in the hot seat gains 3 points as long as one other player guesses their answer correctly.
 
-If everyone guesses correctly the hot seat player's answer, meaning their answer was too specific and obivous, then the player gets zero points. 
+If everyone guesses correctly the hot seat player's answer, meaning their answer was too specific and obivous, then the player gets zero points.
 
 If the non-hot seat players get their answer chosen, they will get a point for it.
 
 # Technical Side
-- Question and its weight value?
+- Questions Class:
+  - question string
+  - weight
+
+-
 
 # Ideas:
 - Players can write their own questions
-- Question Suggestions 
+- Question Suggestions
 - Host privileges and settings
 - Different question packs for different audience
