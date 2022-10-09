@@ -1,5 +1,5 @@
 # Party game
-Objective: Have the most points by the end of 10 rounds
+Objective: Be the first player to reach the specified number of points 
 
 Player count: 5-10
 
@@ -24,7 +24,7 @@ If the non-hot seat players get their answer chosen, they will get a point for i
 # Technical Side
 - Question and its weight value?
 
-# ideas:
+# Ideas:
 - Players can write their own questions
 - Question Suggestions 
 - Host privileges and settings
