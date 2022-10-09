@@ -28,3 +28,4 @@ If the non-hot seat players get their answer chosen, they will get a point for i
 - Players can write their own questions
 - Question Suggestions 
 - Host privileges and settings
+- Different question packs for different audience
