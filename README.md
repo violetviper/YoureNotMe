@@ -1,3 +1,10 @@
+the quick brown fox jumps over the lazy dog
+bruh
+bruh
+bruh
+bruh
+ummmmmmmm
+
 # Party game
 Objective: Be the first player to reach the specified number of points 
 
