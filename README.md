@@ -1,7 +1,7 @@
 # Party game
 Objective: Be the first player to reach the specified number of points 
 
-Player count: 5-10
+Player count: 4-10
 
 # Gameplay
 Each turn, one player is in the "hot seat".
