@@ -22,11 +22,27 @@ If everyone guesses correctly the hot seat player's answer, meaning their answer
 If the non-hot seat players get their answer chosen, they will get a point for it.
 
 # Technical Side
-- Questions Class:
+- Questions class:
   - question string
-  - weight
+  - (?) weight
 
--
+- (?) Question Pack:
+  - string name
+  - array of question instances
+  
+- Card class:
+  - --different constructors for different game modes
+  - constructor(int n, pack p): generates array of n random, unique questions from p
+  - constructor(int units, int, margin_of_error, pack p): generates array of questions from p whose weights sum to units + or - error
+
+- Player Class:
+  - points
+  - name
+  - profile picture
+  - turn order  
+
+- Game Class:
+  - point goal
 
 # Ideas:
 - Players can write their own questions
