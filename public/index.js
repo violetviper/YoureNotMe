@@ -145,5 +145,16 @@ nsfwQuestions =
     "What was the worst sexual encounter you have ever had?",
   ]
 
+berkeleyQuestions =
+  [
+    "How do you feel about Oski?",
+    "What is your favorite place on campus?",
+    "What is the best restauraunt on Telegraph?",
+    "Who is the worst professor at Cal?",
+    "Who is your favorite professor at Cal",
+    "Who is the most memorable person you've met in college?"
+  ]
+
 let generalQuestionPack = new QuestionPack("general", generalQuestions);
 let nsfwQuestionPack = new QuestionPack("nsfw", nsfwQuestions);
+let berkeleyQuestionPack = new QuestionPack("berkeley", berkeleyQuestions);
