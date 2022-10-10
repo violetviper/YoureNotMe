@@ -29,7 +29,7 @@ If the non-hot seat players get their answer chosen, they will get a point for i
 - (?) Question Pack:
   - string name
   - array of question instances
-  
+
 - Card class:
   - --different constructors for different game modes
   - constructor(int n, pack p): generates array of n random, unique questions from p
@@ -43,6 +43,15 @@ If the non-hot seat players get their answer chosen, they will get a point for i
 
 - Game Class:
   - point goal
+
+- Game States:
+  - Player joining (lobby)  
+  - Select new hotseat player
+  - Drawing a new question
+  - Everyone answering questions
+  - Guessing phase
+  - Turn change
+  - Victory
 
 # Ideas:
 - Players can write their own questions
