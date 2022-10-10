@@ -1,0 +1,22 @@
+{
+  "name": "yourenotme",
+  "version": "1.0.0",
+  "description": "Objective: Be the first player to reach the specified number of points",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/violetviper/YoureNotMe.git"
+  },
+  "author": "VioletViper",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/violetviper/YoureNotMe/issues"
+  },
+  "homepage": "https://github.com/violetviper/YoureNotMe#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
