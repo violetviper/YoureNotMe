@@ -9,6 +9,9 @@ app.use(express.static('public'));
 
 console.log("Server up and running!");
 
-// var socket = require('socket.io');
+var socket = require('socket.io');
+var io = socket(server);
 
-// var io = socket(server);
+io.on('connection', socket => {
+  console.log("new connection: " + socket.id);
+});

@@ -1,3 +1,6 @@
+const socket = io.connect("http://localhost:3000");
+
+
 class Game {
   constructor() {
     this.players = [];
@@ -15,7 +18,10 @@ class Game {
   this.chooseHotseat = function() {
     this.hotseatPlayer = Math.floor(Math.random() * playerCount);
   }
+  /*
+  this.removePlayer = function(username, id) {
 
+  }*/
 }
 
 class Player {
@@ -142,7 +148,9 @@ generalQuestions =
 
 nsfwQuestions =
   [
-    "What was the worst sexual encounter you have ever had?",
+    "What is your biggest turn-on?",
+    "Toes?",
+    "What's the dumbest thing you did while under the influence?"
   ]
 
 berkeleyQuestions =
