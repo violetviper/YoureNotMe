@@ -42,7 +42,7 @@ function joinRoomClicked() {
     socket.on('connected', () => {
       console.log("connected, now requesting join room");
       const roomID = "room123"; // TODO: CHANGE LATER
-      socket.emit("joinRoom", {roomID, nickname.value}); // todo: data add pfp and room code
+      socket.emit("joinRoom", {"roomID" : roomID, "nickname" : nickname.value}); // todo: data add pfp and room code
     })
     // todo: regulate times joined to one; hide html join form
   }
@@ -54,18 +54,16 @@ function createRoomClicked() {
     socket = io.connect("http://localhost:3000"); // change to server with rooms
     socket.on('connected', () => {
       console.log("connected, now requesting host room");
-      socket.emit("hostRoom", {nickname.value}); // todo: data add pfp and room code
+      socket.emit("hostRoom", {"nickname" : nickname.value}); // todo: data add pfp and room code
     })
-
+  }
 }
 
 
-
-socket.on('connected', () {
+socket.on('connected', () => {
   console.log("connected to server huzzah: ");
   setPage("loading-page");
 });
-
 
 
 socket.on('playerJoined', playerDict => {
@@ -73,7 +71,7 @@ socket.on('playerJoined', playerDict => {
   for([key, val] of Object.entries(playerDict)) {
     const user = document.createElement("li");
     user.innerHTML = val.name;
-    // todo: add profile pic
+    // TODO: add profile pic
     user.id = key;
     document.getElementById("player-list").appendChild(user);
   }
