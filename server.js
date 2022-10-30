@@ -15,7 +15,8 @@ var server = socket(server);
 
 // TODO: separate classes into different files.
 class Game {
-  constructor() {
+  constructor(hostID) {
+    this.hostID = hostID;
     this.players = {};
     this.playerCount = 0;
     this.gamestate = "INITIAL";
@@ -51,20 +52,40 @@ class Player {
 
 let state = new Game();
 
+let rooms = {};
+
 server.on('connection', client => {
   console.log("new connection: " + client.id);
-  client.emit('connected', {number: 10, name: "hello"});
+  client.emit('connected');
 
-  client.on('join', data => {
-    state.addPlayer(client.id, data["username"]);
-    server.emit('playerJoined', state.players);
+  client.on('joinRoom', data => {
+    if (! rooms.has(data["roomID"])) {
+      // TODO: send error emit, room not found; note playerType
+      return;
+    }
+    if (false) { // TODO: if not room is joinable, error
+      return;
+    }
+    const game = rooms[data["roomID"]];
+    game.addPlayer(client.id, data["username"]) // TODO: pfp
+
+    client.emit('successfullyJoinedRoom', game);
+    server.emit('playerListUpdate', game) // TODO: maybe
+  });
+  client.on('hostRoom', data=> {
+    let newRoomId; // TODO: Create Among-Us-style room codes (letters and numbers)
+    do {
+      newRoomId = "room" + parseSparseInt(Math.random() * 1000);
+    } while (!rooms.has(newRoomId));
+    rooms[newRoomId] = new Game(client.id);
+    // TODO: emit message for host, successfully hosted room
   });
 
   // Disconnect handler
   client.on('disconnect', () => {
     console.log("fuck you guys im gone --" + client.id);
-    state.removePlayer(client.id); // todo: properly remove player
-    server.emit('playerJoined', state.players);
+    //state.removePlayer(client.id); // todo: properly remove player
+    //server.emit('playerJoined', state.players);
 
   });
 

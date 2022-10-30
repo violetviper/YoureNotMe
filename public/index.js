@@ -1,23 +1,69 @@
 const joinBtn = document.getElementById("join-btn");
+const hostBtn = document.getElementById("host-btn");
 const nickname = document.getElementById("username-input");
 
-joinBtn.onclick = joinClicked;
+joinBtn.onclick = joinRoomClicked;
+hostBtn.onclick = createRoomClicked;
+
+let playerType;
+
+// function setVisibility(id, isVisible) {
+//   if (isVisible) document.getElementById(id).style.visibility = "visible";
+//   else document.getElementById(id).style.visibility = "hidden";
+// }
+
+function setPage(pageId) {
+  const list = document.querySelectorAll('.page')
+  for (let i = 0; i < list.length - 1; i++) {
+    list[i].style.visibility = "hidden";
+  }
+  document.getElementById(pageId).style.visibility = "visible";
+}
+
+function init() {
+  setPage("client-lobby");
+}
+
+init();
 
 let socket;
-function joinClicked() {
-  if (/\S/.test(nickname.value)) {
-    socket.emit('join', {username:nickname.value});
 
-    console.log("profile submitted")
+// TODO: host button clicked
+
+function joinRoomClicked() {
+  if (/\S/.test(nickname.value)) {
+    playerType = "member";
+    // socket.emit('join', {username:nickname.value});
+    //
+    //
+    //
+    console.log("Request connect");
+    socket = io.connect("http://localhost:3000"); // change to server with rooms
+    socket.on('connected', () => {
+      console.log("connected, now requesting join room");
+      const roomID = "room123"; // TODO: CHANGE LATER
+      socket.emit("joinRoom", {roomID, nickname.value}); // todo: data add pfp and room code
+    })
     // todo: regulate times joined to one; hide html join form
   }
 }
+function createRoomClicked() {
+  if (/\S/.test(nickname.value)) {
+    playerType = "host";
+    console.log("Request connect");
+    socket = io.connect("http://localhost:3000"); // change to server with rooms
+    socket.on('connected', () => {
+      console.log("connected, now requesting host room");
+      socket.emit("hostRoom", {nickname.value}); // todo: data add pfp and room code
+    })
+
+}
 
 
-socket = io.connect("http://localhost:3000");
 
-socket.on('connected', data => {
-  console.log("connected to server huzzah: " + data['name']);
+socket.on('connected', () {
+  console.log("connected to server huzzah: ");
+  setPage("loading-page");
 });
 
 
