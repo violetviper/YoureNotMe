@@ -2,14 +2,45 @@
 <html>
   <head>
     <title>Main</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="./libraries/socket.io.js"></script>
 
   </head>
   <main>
-    <p>Nickname:</p>
-    <input type="text" id="username-input" name="name"><br><br>
-    <button type="button" id="join-btn">join</button>
-    <p>Hello World!</p>
+
+    <div class="page" id="client-lobby">
+      <p>Nickname:</p>
+      <input type="text" id="username-input" name="name"><br><br>
+      <button type="button" class="btn btn-primary" id="join-btn">join</button>
+
+      <!-- TODO: selection menu -->
+      <div class="pfp-list">
+        <div class=""></div>
+
+      </div>
+
+      <input type="text" id="room-code-input" name="room-code-input"><br><br>
+      <button type="button" class="btn btn-primary" id="host-btn">host</button>
+    </div>
+    <!-- TODO: rooms -->
+    <div class="page" id="host-lobby">
+
+    </div>
+    <div class="page" id="card-display">
+
+    </div>
+    <div class="page" id="write-answer">
+
+    </div>
+
+    <div class="page" id="game-end">
+
+    </div>
+
+
+
+
+
     <div class="game">
       <div class="card">
         <p id="question">What's your favorite food?</p>

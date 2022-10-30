@@ -17,7 +17,7 @@ Points are gained by correctly guessing which answer is the hot seat player's an
 
 The player in the hot seat gains 3 points as long as one other player guesses their answer correctly.
 
-If everyone guesses correctly the hot seat player's answer, meaning their answer was too specific and obivous, then the player gets zero points.
+If everyone guesses correctly the hot seat player's answer, meaning their answer was too specific and obvious, then the player gets zero points.
 
 If the non-hot seat players get their answer chosen, they will get a point for it.
 
