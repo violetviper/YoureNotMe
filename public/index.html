@@ -9,7 +9,7 @@
   </head>
   <main>
     <div class="page" id="client-lobby">
-      <div class="text-center display-1">You're Not Me</div>
+      <div class="text-center display-1">YoureNotMe</div>
         <div class="d-grid gap-2 col-4 mx-auto border border-3 border-dark rounded padding-right p-1 bg-light">
             <div class="border border-primary border-3 rounded">
               <input type="text" class="form-control" id="username-input" name="name" placeholder="Nickname">
@@ -51,7 +51,13 @@
 
 
     <div class="page" id="card-display">
-        <p id="question">What's your favorite food?</p>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title" id="hotseat-player">Jun</h5>
+          <h6 class="card-subtitle mb-2 text-muted" id="question-pack">Pack: General Questions</h6>
+          <p class="card-text" id="question">What movie protagonist are you most like?</p>
+        </div>
+      </div>
     </div>
 
 
@@ -68,6 +74,6 @@
 
 
 
+    </html>
     <script src="./client.js"></script>
   </main>
-</html>

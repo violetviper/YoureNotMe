@@ -22,6 +22,23 @@ If everyone guesses correctly the hot seat player's answer, meaning their answer
 If the non-hot seat players get their answer chosen, they will get a point for it.
 
 # Technical Side
+
+## server, rooms, clients (solely networking)
+  This way: we don't transfer large socket objects when emitting gamestates; uesrs can have the same nickname across different rooms
+
+ - RoomMap: dictionary with roomID as key and Game object as value
+ - userMap: dictionary with client.id as key and socket object as value (npm socket.io)
+
+
+### Classes
+ - Game: hostID, roomID, playerMap, (other game stuff)
+ -- playerMap: dictionary with username as key and Player object (containing client.id) as value
+
+ - Player: client.id, username, (other player stuff)
+
+
+
+
 - Questions class:
   - question string
   - (?) weight

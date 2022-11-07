@@ -10,14 +10,13 @@ console.log("Server up and running on port 3000!");
 var socket = require('socket.io');
 var server = socket(server);
 
-
-
+const possibleDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 // TODO: separate classes into different files.
 class Game {
   constructor(hostID) {
     this.hostID = hostID;
-    this.players = {};
+    this.playerMap = {};
     this.playerCount = 0;
     this.gamestate = "INITIAL";
     this.pointGoal = 0;
@@ -25,8 +24,8 @@ class Game {
     this.gamepack = "";
   }
 
-  addPlayer = function(id, username) {
-    this.players[id] = new Player(username, 0, id);
+  addPlayer = function(clientID, username) {
+    this.playerMap[username] = new Player(clientID, username);
     this.playerCount++;
   }
 
@@ -34,41 +33,44 @@ class Game {
     this.hotseatPlayer = Math.floor(Math.random() * playerCount);
   }
 
-  removePlayer = function(id) {
-    this.players.delete(id);
+  removePlayer = function(username) {
+    this.playerMap.delete(username);
     this.playerCount--;
   }
 }
 
 class Player {
-  constructor(name, points, id) {
+  constructor(clientID, name) {
+    this.id = clientID;
     this.name = name;
-    this.points = points;
+    this.points = 0;
     this.profilePicture = 0;
-    this.id = id;
   }
 }
 
 
 let state = new Game();
 
-let rooms = {};
+let roomMap = {}; // roomID : Game Obj
+let userMap = {}; // clientID : Socket Obj
 
 server.on('connection', client => {
   console.log("new connection: " + client.id);
+  userMap[client.id] = client;
   client.emit('connected');
 
   client.on('joinRoom', data => {
-    console.log(data["roomID"] + "  |  " + rooms);
-    if (! data["roomID"] in rooms) {
+    if (! (data["roomID"] in roomMap)) {
       // TODO: send error emit, room not found; note playerType
       return;
     }
-    if (false) { // TODO: if not room is joinable, error eg player limit
+    if (false) { // TODO: if not room is joinable, error. eg player limit
       return;
     }
 
-    const game = rooms[data["roomID"]];
+
+
+    const game = roomMap[data["roomID"]];
     game.addPlayer(client.id, data["username"]) // TODO: pfp
 
     client.emit('successfullyJoinedRoom', game);
@@ -76,17 +78,22 @@ server.on('connection', client => {
   });
 
   client.on('hostRoom', data=> {
-    let newRoomId; // TODO: Create Among-Us-style room codes (letters and numbers)
+    let newRoomId = ""; // TODO: Create Among-Us-style room codes (letters and numbers)
     do {
-      newRoomId = "room" + parseSparseInt(Math.random() * 1000);
-    } while (!(newRoomId in rooms));
-    rooms[newRoomId] = new Game(client.id);
+      for (let i = 0; i < 6; i++) {
+        let randomIndex = Math.floor(Math.random() * 36);
+        newRoomId += possibleDigits[randomIndex];
+      }
+    } while (newRoomId in roomMap);
+
+    roomMap[newRoomId] = new Game(client.id);
     // TODO: emit message for host, successfully hosted room
   });
 
   // Disconnect handler
   client.on('disconnect', () => {
     console.log("fuck you guys im gone --" + client.id);
+    userMap.delete(client.id); // TODO: reconnection handling should not instaremove, need map of client ids to rooms/nickname
     //state.removePlayer(client.id); // todo: properly remove player
     //server.emit('playerJoined', state.players);
 

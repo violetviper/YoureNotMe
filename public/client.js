@@ -18,7 +18,7 @@ function selectIcon() {
 }
 
 function setPage(pageId) {
-  const list = document.querySelectorAll('.page')
+  const list = document.querySelectorAll('.page');
   for (let i = 0; i < list.length - 1; i++) {
     list[i].style.visibility = "hidden";
   }
@@ -46,38 +46,36 @@ function joinRoomClicked() {
     socket = io.connect("http://localhost:3000"); // change to server with rooms
     socket.on('connected', () => {
       console.log("connected, now requesting join room");
-      const roomID = document.getElementById("#room-code-input").value; // TODO: CHANGE LATER
+      const roomID = document.getElementById("room-code-input").value; // TODO: CHANGE LATER
       socket.emit("joinRoom", {"roomID" : roomID, "nickname" : nickname.value}); // todo: data add pfp and room code
-    })
+    });
     // todo: regulate times joined to one; hide html join form
   }
 }
+
 function createRoomClicked() {
   if (/\S/.test(nickname.value)) {
     playerType = "host";
     console.log("Request connect");
     socket = io.connect("http://localhost:3000"); // change to server with rooms
+
     socket.on('connected', () => {
       console.log("connected, now requesting host room");
       socket.emit("hostRoom", {"nickname" : nickname.value}); // todo: data add pfp and room code
-    })
+    });
+
+
   }
 }
 
-
-socket.on('connected', () => {
-  console.log("connected to server huzzah: ");
-  setPage("loading-page");
-});
-
-
-socket.on('playerJoined', playerDict => {
-  console.log(playerDict);
-  for([key, val] of Object.entries(playerDict)) {
-    const user = document.createElement("li");
-    user.innerHTML = val.name;
-    // TODO: add profile pic
-    user.id = key;
-    document.getElementById("player-list").appendChild(user);
-  }
-});
+//
+// socket.on('playerJoined', playerDict => {
+//   console.log(playerDict);
+//   for([key, val] of Object.entries(playerDict)) {
+//     const user = document.createElement("li");
+//     user.innerHTML = val.name;
+//     // TODO: add profile pic
+//     user.id = key;
+//     document.getElementById("player-list").appendChild(user);
+//   }
+// });
