@@ -59,24 +59,27 @@ server.on('connection', client => {
   client.emit('connected');
 
   client.on('joinRoom', data => {
-    if (! rooms.has(data["roomID"])) {
+    console.log(data["roomID"] + "  |  " + rooms);
+    if (! data["roomID"] in rooms) {
       // TODO: send error emit, room not found; note playerType
       return;
     }
-    if (false) { // TODO: if not room is joinable, error
+    if (false) { // TODO: if not room is joinable, error eg player limit
       return;
     }
+
     const game = rooms[data["roomID"]];
     game.addPlayer(client.id, data["username"]) // TODO: pfp
 
     client.emit('successfullyJoinedRoom', game);
     server.emit('playerListUpdate', game) // TODO: maybe
   });
+
   client.on('hostRoom', data=> {
     let newRoomId; // TODO: Create Among-Us-style room codes (letters and numbers)
     do {
       newRoomId = "room" + parseSparseInt(Math.random() * 1000);
-    } while (!rooms.has(newRoomId));
+    } while (!(newRoomId in rooms));
     rooms[newRoomId] = new Game(client.id);
     // TODO: emit message for host, successfully hosted room
   });

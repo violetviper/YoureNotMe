@@ -6,11 +6,16 @@ joinBtn.onclick = joinRoomClicked;
 hostBtn.onclick = createRoomClicked;
 
 let playerType;
+let playerIcon;
 
 // function setVisibility(id, isVisible) {
 //   if (isVisible) document.getElementById(id).style.visibility = "visible";
 //   else document.getElementById(id).style.visibility = "hidden";
 // }
+
+function selectIcon() {
+
+}
 
 function setPage(pageId) {
   const list = document.querySelectorAll('.page')
@@ -41,7 +46,7 @@ function joinRoomClicked() {
     socket = io.connect("http://localhost:3000"); // change to server with rooms
     socket.on('connected', () => {
       console.log("connected, now requesting join room");
-      const roomID = "room123"; // TODO: CHANGE LATER
+      const roomID = document.getElementById("#room-code-input").value; // TODO: CHANGE LATER
       socket.emit("joinRoom", {"roomID" : roomID, "nickname" : nickname.value}); // todo: data add pfp and room code
     })
     // todo: regulate times joined to one; hide html join form

@@ -8,9 +8,9 @@
 
   </head>
   <main>
-
     <div class="page" id="client-lobby">
-        <div class="d-grid gap-2 col-4 mx-auto border border-3 border-dark rounded padding-right p-1">
+      <div class="text-center display-1">You're Not Me</div>
+        <div class="d-grid gap-2 col-4 mx-auto border border-3 border-dark rounded padding-right p-1 bg-light">
             <div class="border border-primary border-3 rounded">
               <input type="text" class="form-control" id="username-input" name="name" placeholder="Nickname">
             </div>
@@ -18,7 +18,6 @@
             <div class="border border-primary border-3 rounded">
               <input type="text" class="form-control" id="room-code-input" name="room-code-input" placeholder="Room Code">
             </div>
-
 
             <!-- TODO: selection menu -->
             <div class="pfp-list">
@@ -39,12 +38,14 @@
 
     <!-- TODO: rooms -->
     <div class="page" id="room-lobby">
-      <div class="players">
-        <h1>Players:</h1>
-        <ul id="player-list">
+      <div class="d-grid gap-2 col-4 mx-auto border border-3 border-dark rounded padding-right p-1 bg-light">
+        <div class="players">
+          <h1>Players:</h1>
+          <ul id="player-list">
 
-        </ul>
+          </ul>
 
+        </div>
       </div>
     </div>
 
@@ -67,6 +68,6 @@
 
 
 
-    <script src="./index.js"></script>
+    <script src="./client.js"></script>
   </main>
 </html>
