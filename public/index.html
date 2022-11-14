@@ -35,24 +35,91 @@
 
     <div class="page" id="loading">
       <p>loading...</p>
+      <!-- TODO: loading animation !!! -->
     </div>
 
-
-    <!-- TODO: rooms -->
     <div class="page" id="room-lobby">
-      <div class="d-grid gap-2 col-4 mx-auto border border-3 border-dark rounded padding-right p-1 bg-light">
+      <div class="align-baseline d-grid gap-1 col-3 border border-3 border-dark rounded padding-right p-1 bg-light">
+        <p class="h1">Options</p>
 
+        <li>Question Packs
+          <ul>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="general" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  General
+                </label>
+            </div>
+          </ul>
+
+          <ul>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="nsfw" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  NSFW
+                </label>
+            </div>
+          </ul>
+
+          <ul>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="berkeley" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Berkeley
+                </label>
+            </div>
+          </ul>
+        </li>
+
+        <li> Question Time
+          <ul>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li><button class="dropdown-item" type="button">Action</button></li>
+                <li><button class="dropdown-item" type="button">Another action</button></li>
+                <li><button class="dropdown-item" type="button">Something else here</button></li>
+              </ul>
+            </div>
+          </ul>
+        </li>
+
+        <li> Guessing Time
+          <ul>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li><button class="dropdown-item" type="button">Action</button></li>
+                <li><button class="dropdown-item" type="button">Another action</button></li>
+                <li><button class="dropdown-item" type="button">Something else here</button></li>
+              </ul>
+            </div>
+          </ul>
+        </li>
+
+        <li> Custom Questions
+          <ul>
+            <textarea class="form-control" id="customQuestionInput" rows="3"></textarea>
+          </ul>
+        </li>
+
+      </div>
+
+      <div class="d-grid gap-2 col-4 mx-auto border border-3 border-dark rounded padding-right p-1 bg-light">
         <div id="join-link-display">
           <p id="join-link-text"></p>
         </div>
         <div class="players">
-          <h1>Players:</h1>
+          <p class="h1">Players:</h1>
           <ul id="player-list"></ul>
         </div>
-
+        <button type="button" class="btn btn-primary" id="start-btn">Start Game!</button>
       </div>
     </div>
-
 
     <div class="page" id="card-display">
       <div class="card" style="width: 18rem;">
@@ -93,3 +160,4 @@
     </html>
     <script src="./client.js"></script>
   </main>
+s

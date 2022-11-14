@@ -105,15 +105,31 @@ const questionList = {
   ],
 };
 class QuestionPack {
-  constructor(name) {
-      this.name = name;
-      this.questions = [...questionsList[name]];
+  constructor(questionPackNames = ["general"], customQuestions = []) {
+    // TODO: error if num questions < rounds * minQuestionsPerRound
+
+    this.questions = [];
+    // Adds each selected question pack to questionpack object
+    for (let i = 0; i < questionPackNames.length; i++) {
+      this.questions = this.questions.concat(questionList[questionPackNames[i]]);
+    }
+    // Adds list of custom questions to questionpack object
+    this.questions = this.questions.concat(customQuestions);
   }
 
   pickRandom = function(numQuestions) { // fixme im slow
     // assert n <= questions.length
-    const shuffled = [...questions].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, numQuestions);
+    const shuffled = [...this.questions].sort(() => 0.5 - Math.random)
+    let returnedQuestions = shuffled.slice(0, numQuestions);
+
+    // question modes: multi questions vs picking questions from list
+
+    for (let i = 0; i < returnedQuestions.length; i++) {
+      // this.questions.remove(returnedQuestions[i]);
+      // TODO: syntax above line
+    }
+
+    return returnedQuestions;
   }
   // func ... [Math.floor(Math.random()*questionPack..length)]
 }

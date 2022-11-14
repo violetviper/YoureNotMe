@@ -9,6 +9,7 @@ class Game {
     this.gamestate = "INITIAL";
     this.pointGoal = 0;
     this.hotseatPlayer = 0;
+    this.questionPack;
     this.gamepack = "";
   }
 
@@ -18,7 +19,7 @@ class Game {
   }
 
   chooseHotseat = function() {
-    this.hotseatPlayer = Math.floor(Math.random() * playerCount);
+    this.hotseatPlayer = Math.floor(Math.random() * this.playerCount);
   }
 
   removePlayer = function(nickname) {

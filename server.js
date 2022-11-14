@@ -69,6 +69,33 @@ server.on('connection', client => {
     client.join(newRoomId); // first member in room (host)
     client.emit("roomCreated", {"game" : roomMap[newRoomId]});
     // TODO: emit message for host, successfully hosted room
+
+    // client.on("startGameClicked", data => {
+    //   const game = roomMap[data["roomID"]];
+    //   game.questionPack = new QuestionPack(data["questionPackNames"], data["customQuestions"]);
+    //
+    //   // TODO: (not neccesarily here) playercount updates, it's kinda weird
+    //   game.chooseHotseat();
+    //   numQuestions = 1; // TODO: gameMode changes this
+    //   card = new Card(numQuestions, game.questionPack);
+    //   server.to(data["roomID"]).emit("newHotseatAndCard", {"game" : game, "card" : card});
+    //
+    // });
+
+  });
+
+  client.on("startGameClicked", data => {
+    console.log("game started at room " + data["roomID"]);
+    const game = roomMap[data["roomID"]];
+    game.questionPack = new QuestionPack(data["questionPackNames"], data["customQuestions"]);
+
+    // TODO: (not neccesarily here) playercount updates, it's kinda weird
+    game.chooseHotseat();
+    numQuestions = 1; // TODO: gameMode changes this
+    card = new Card(numQuestions, game.questionPack);
+
+    server.to(data["roomID"]).emit("newHotseatAndCard", {"game" : game, "card" : card});
+
   });
 
   // Disconnect handler
