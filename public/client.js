@@ -44,6 +44,10 @@ function init() {
   // audio.play();
 }
 
+window.addEventListener("DOMContentLoaded", event => {
+  const audio = document.getElementById("sample");
+});
+
 init();
 
 let socket;
