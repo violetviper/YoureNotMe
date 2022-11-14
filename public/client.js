@@ -24,16 +24,21 @@ function selectIcon() {
 
 function setPage(pageID) {
   gamestate = pageID;
-  const list = document.querySelectorAll('.page');
-  for (let i = 0; i < list.length - 1; i++) {
-    list[i].style.visibility = "hidden";
+  const pages = document.querySelectorAll('.page');
+  for (let i = 0; i < pages.length - 1; i++) {
+    pages[i].style.visibility = "hidden";
+    pages[i].style.height = "0vh";
   }
-  document.getElementById(pageID).style.visibility = "visible";
+  let current = document.getElementById(pageID);
+  current.style.visibility = "visible";
+  current.style.height = "100vh";
 }
 
 function init() {
   setPage("client-lobby");
   playertype = null;
+  // var audio = new Audio('shitty.mp3');
+  // audio.play();
 }
 
 window.addEventListener("DOMContentLoaded", event => {
@@ -51,6 +56,10 @@ function joinRoomClicked() {
     playerType = "member";
     localStorage.setItem('nickname', JSON.stringify(nickname.value));
     setPage("loading");
+
+    // const audio = new Audio("https://www.youtube.com/watch?v=QKgcdV3vykU)");
+    // audio.volume = 0.2;
+    // audio.play();
 
     console.log("Request connect");
     socket = io.connect("http://localhost:3000"); // change to server with rooms
