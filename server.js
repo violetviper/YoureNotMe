@@ -15,7 +15,10 @@ console.log("Server up and running on port 3000!");
 var socket = require('socket.io');
 var server = socket(server);
 
-const possibleDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const possibleDigits = ["0", "1", "2", "3", "4", "5", "6", 
+"7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+ "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+  "V", "W", "X", "Y", "Z"];
 
 
 let state = new Game();
@@ -87,14 +90,13 @@ server.on('connection', client => {
   client.on("startGameClicked", data => {
     console.log("game started at room " + data["roomID"]);
     const game = roomMap[data["roomID"]];
-    game.questionPack = new QuestionPack(data["questionPackNames"], data["customQuestions"]);
+    game.settings = data.settings;
+    game.generateQuestionPack();
 
-    // TODO: (not neccesarily here) playercount updates, it's kinda weird
     game.chooseHotseat();
-    numQuestions = 1; // TODO: gameMode changes this
-    card = new Card(numQuestions, game.questionPack);
+    game.generateCard();
 
-    server.to(data["roomID"]).emit("newHotseatAndCard", {"game" : game, "card" : card});
+    server.to(data["roomID"]).emit("startRound", {"game" : game});
 
   });
 

@@ -1,14 +1,34 @@
-const joinBtn = document.getElementById("join-btn");
-const hostBtn = document.getElementById("host-btn");
-const startBtn = document.getElementById("start-btn");
-const nickname = document.getElementById("username-input");
-const htmlPlayerList = document.getElementById("player-list");
 
-nickname.value = localStorage.getItem('nickname') ? JSON.parse(localStorage.getItem('nickname')) : '';
+  
+let htmlElems = {};
+let pageElems = {};
+document.querySelectorAll('.page').forEach((pageElem) => pageElems[pageElem.id] = pageElem);
 
-joinBtn.onclick = joinRoomClicked;
-hostBtn.onclick = createRoomClicked;
-startBtn.onclick = startGameClicked;
+function addHtmlElems(elemIDs) {
+  for (let elemID in elemIDs) {
+    htmlElems[elemID] = document.getElementById(elemID);
+  }
+}
+[ 'start-btn', 
+  'username-input', 
+  'player-list', 
+  'card-question-list',
+  'host-btn', 
+  'join-btn', 
+  'join-link-text', 
+  'room-code-input'].forEach((id) => htmlElems[id] = document.getElementById(id));
+
+htmlElems["username-input"].value = localStorage.getItem('nickname') ? JSON.parse(localStorage.getItem('nickname')) : '';
+
+htmlElems["join-btn"].onclick = joinRoomClicked;
+htmlElems["host-btn"].onclick = createRoomClicked;
+htmlElems["start-btn"].onclick = startGameClicked;
+
+let player = {
+  type: "",
+  icon: "",
+  nickname: htmlElems["username-input"].value,
+}
 
 let playerType;
 let playerIcon;
@@ -16,30 +36,18 @@ let game;
 let gamestate;
 let roomID;
 
-// function setVisibility(id, isVisible) {
-//   if (isVisible) document.getElementById(id).style.visibility = "visible";
-//   else document.getElementById(id).style.visibility = "hidden";
-// }
-
-function selectIcon() {
-
-}
-
 function setPage(pageID) {
   gamestate = pageID;
   const pages = document.querySelectorAll('.page');
-  for (let i = 0; i < pages.length - 1; i++) {
-    pages[i].style.visibility = "hidden";
-    pages[i].style.height = "0vh";
-  }
-  let current = document.getElementById(pageID);
-  current.style.visibility = "visible";
-  current.style.height = "100vh";
+  Object.keys(pageElems).forEach((key) => {
+    if (key == pageID) pageElems[key].style.display = "block";
+    else pageElems[key].style.display = "none";
+  });
 }
 
 function init() {
   setPage("client-lobby");
-  playertype = null;
+  player.type = null;
   // var audio = new Audio('shitty.mp3');
   // audio.play();
 }
@@ -55,9 +63,9 @@ let socket;
 // TODO: host button clicked
 
 function joinRoomClicked() {
-  if (/\S/.test(nickname.value)) {
-    playerType = "member";
-    localStorage.setItem('nickname', JSON.stringify(nickname.value));
+  if (/\S/.test(htmlElems["username-input"].value)) {
+    player.type = "member";
+    localStorage.setItem('nickname', JSON.stringify(htmlElems["username-input"].value));
     setPage("loading");
 
     // const audio = new Audio("https://www.youtube.com/watch?v=QKgcdV3vykU)");
@@ -66,20 +74,21 @@ function joinRoomClicked() {
 
     console.log("Request connect");
     socket = io.connect("http://localhost:3000"); // change to server with rooms
-    socket.on('connected', () => {
+    socket.once('connected', () => {
       socketConnected();
-      const roomID = document.getElementById("room-code-input").value; // TODO: CHANGE LATER
+      const roomID = htmlElems["room-code-input"].value; // TODO: CHANGE LATER
       console.log("requesting join room " + roomID);
-      socket.emit("joinRoom", {"roomID" : roomID, "nickname" : nickname.value}); // todo: data add pfp and room code
+      socket.emit("joinRoom", {"roomID" : roomID, "nickname" : htmlElems["username-input"].value}); // todo: data add pfp and room code
 
-      socket.on("successfullyJoinedRoom", data => {
+      socket.once("successfullyJoinedRoom", data => {
         setPage("room-lobby");
         game = data["game"];
         console.log("Congrats, you've joined room " + game.roomID + "! :)")
         gameUpdate();
+
       });
 
-      socket.on("roomNotFound", data => {
+      socket.once("roomNotFound", data => {
         console.log("Room ID " + roomID + " does not exist )):");
         setPage("client-lobby");
       })
@@ -89,19 +98,19 @@ function joinRoomClicked() {
 }
 
 function createRoomClicked() {
-  if (/\S/.test(nickname.value)) {
-    playerType = "host";
+  if (/\S/.test(htmlElems["username-input"].value)) {
+    player.type = "host";
     setPage("loading");
 
     console.log("Request connect");
     socket = io.connect("http://localhost:3000"); // change to server with rooms
 
-    socket.on('connected', () => {
+    socket.once('connected', () => {
       socketConnected();
       console.log("Requesting to host room");
-      socket.emit("hostRoom", {"nickname" : nickname.value}); // todo: data add pfp and room code
+      socket.emit("hostRoom", {"nickname" : htmlElems["username-input"].value}); // todo: data add pfp and room code
 
-      socket.on("roomCreated", data => {
+      socket.once("roomCreated", data => {
         setPage("room-lobby");
         game = data["game"];
         console.log("Congrats, you're hosting room " + game.roomID + "! :D");
@@ -127,46 +136,80 @@ function startGameClicked() {
   */
 
   socket.emit("startGameClicked", {
-    "roomID" : game.roomID,
-    "questionPackNames" : questionPackNames,
-    "customQuestions" : customQuestions
+    settings: game.settings,
+    roomID : game.roomID
   });
 
   setPage("loading");
 
-  // TODO: fix location of this block
-  socket.on("newHotseatAndCard", data => {
-    console.log("new card");
-    game = data["game"];
-    gameUpdate();
+  // TODO: repeat location of this line
+  socket.once("startRound", startRound);
+}
 
-    card = data["card"];
-    // TODO: front-end, update card-display html stuff (consider card.questionList)
-    setPage("card-display");
-  });
+function startRound(data) {
+  console.log("Round started, new card");
+  game = data["game"];
+  gameUpdate();
+  const isHotseatPlayer = player.nickname === game.hotseatPlayer  ;
+  
+  for(const q of Object.entries(game.card.questionList)) {
+    const questionInput = document.createElement("input");
+    questionInput.type = "checkbox";
+    questionInput.style.display = "inline";
+    if (!isHotseatPlayer) {
+      questionInput.disabled = true;
+    }
+
+    const questionHTML = document.createElement("p");
+    questionHTML.innerHTML = q;
+    questionHTML.style.display = "inline";
+
+    const questionContainer = document.createElement("li");
+    questionContainer.appendChild(questionInput);
+    questionContainer.appendChild(questionHTML);
+
+    htmlElems["card-question-list"].appendChild(questionContainer);
+
+  }
+  
+  if (game.settings.numDeterminedQuestions 
+    === game.settings.numUndeterminedQuestions) {
+    // skip undetermined
+  } else {
+
+    if (isHotseatPlayer) {
+      
+    }
+    
+  }
+
+  card = data["card"];
+  // TODO: front-end, update card-display html stuff (consider card.questionList)
+  setPage("card-display");
 }
 
 function gameUpdate() {
-  document.getElementById("join-link-text").innerHTML = "RoomID: " + game.roomID;
+  htmlElems["join-link-text"].innerHTML = "RoomID: " + game.roomID;
   if (gamestate == "room-lobby") {
     playerListUpdate();
   }
 }
 
 function playerListUpdate() {
-  htmlPlayerList.innerHTML = "";
+  htmlElems["player-list"].innerHTML = "";
   for(const [nickname, playerObj] of Object.entries(game.playerMap)) {
     const userHTML = document.createElement("li");
     userHTML.innerHTML = nickname;
     if (playerObj.status == "host") {
       userHTML.innerHTML += "👑";
     }
-    htmlPlayerList.appendChild(userHTML);
+    htmlElems["player-list"].appendChild(userHTML);
 
   }
 }
 
 function socketConnected() {
+  player.nickname = htmlElems["username-input"].value;
   console.log("connected to server");
   socket.on("disconnect",() => {
     socket.disconnect();

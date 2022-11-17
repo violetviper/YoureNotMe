@@ -1,4 +1,6 @@
 const Player = require("./Player");
+const Card = require("./Card");
+const QuestionPack = require("./QuestionPack");
 // TODO: separate classes into different files.
 class Game {
   constructor(roomID) {
@@ -6,11 +8,20 @@ class Game {
     this.roomID = roomID;
     this.playerMap = {};
     this.playerCount = 0;
+    this.rounds = 0; // current round, not completed
     this.gamestate = "INITIAL";
     this.pointGoal = 0;
-    this.hotseatPlayer = 0;
+    this.hotseatPlayer = "";
     this.questionPack;
-    this.gamepack = "";
+    this.settings = {
+      numDeterminedQuestions: 3,
+      numUndeterminedQuestions: 5,
+      chosenCardPacks: ["general"],
+      questionTime: 25,
+      guessingTime: 25,
+      customQuestions: "",
+    };
+    this.card;
   }
 
   addPlayer = function(clientID, nickname) {
@@ -19,12 +30,21 @@ class Game {
   }
 
   chooseHotseat = function() {
-    this.hotseatPlayer = Math.floor(Math.random() * this.playerCount);
+    const playerNumber = Math.floor(Math.random() * this.playerCount);
+    this.hotseatPlayer = Object.keys(this.playerMap)[playerNumber];
   }
 
   removePlayer = function(nickname) {
     this.playerMap.delete(nickname);
     this.playerCount--;
+  }
+  
+  generateQuestionPack = function() {
+    this.questionPack = new QuestionPack(this.settings.chosenCardPacks, this.settings.customQuestions);
+  }
+
+  generateCard = function() {
+    this.card = new Card(this.settings.numUndeterminedQuestions, this.questionPack);
   }
 
   setHost = function(nickname) {

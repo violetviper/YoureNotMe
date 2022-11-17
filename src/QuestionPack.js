@@ -104,17 +104,17 @@ const questionList = {
     "Who is the most memorable person you've met in college?"
   ],
 };
-class QuestionPack {
-  constructor(questionPackNames = ["general"], customQuestions = []) {
-    // TODO: error if num questions < rounds * minQuestionsPerRound
 
-    this.questions = [];
+class QuestionPack {
+  constructor(questionPackNames = ["general"], customQuestions = "") {
+    // TODO: error if num questions < rounds * minQuestionsPerRound
+    // "Whats my name?, sdafsdf?"
+    this.questions = customQuestions.split(/\s*,\s*/);
     // Adds each selected question pack to questionpack object
     for (let i = 0; i < questionPackNames.length; i++) {
-      this.questions = this.questions.concat(questionList[questionPackNames[i]]);
+      this.questions = this.questions.concat([...questionList[questionPackNames[i]]]);
     }
-    // Adds list of custom questions to questionpack object
-    this.questions = this.questions.concat(customQuestions);
+
   }
 
   pickRandom = function(numQuestions) { // fixme im slow
