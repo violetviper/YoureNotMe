@@ -96,7 +96,11 @@ server.on('connection', client => {
     game.chooseHotseat();
     game.generateCard();
 
-    server.to(data["roomID"]).emit("startRound", {"game" : game});
+    if (game.settings.numDeterminedQuestions === game.settings.numUndeterminedQuestions) {
+      server.to(data["roomID"]).emit("displayDetermined",   {"game" : game});
+    } else {
+      server.to(data["roomID"]).emit("displayUndetermined", {"game" : game});
+    }
 
   });
 

@@ -45,7 +45,7 @@
         <li>Question Packs
           <ul>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="general" id="flexCheckDefault">
+              <input class="form-check-input setting" type="checkbox" value="general" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
                   General
                 </label>
@@ -54,7 +54,7 @@
 
           <ul>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="nsfw" id="flexCheckDefault">
+              <input class="form-check-input setting" type="checkbox" value="nsfw" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
                   NSFW
                 </label>
@@ -63,7 +63,7 @@
 
           <ul>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="berkeley" id="flexCheckDefault">
+              <input class="form-check-input setting" type="checkbox" value="berkeley" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
                   Berkeley
                 </label>
@@ -74,13 +74,13 @@
         <li> Question Time
           <ul>
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="btn btn-secondary dropdown-toggl setting" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                 Dropdown
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <li><button class="dropdown-item" type="button">Action</button></li>
-                <li><button class="dropdown-item" type="button">Another action</button></li>
-                <li><button class="dropdown-item" type="button">Something else here</button></li>
+                <li><button class="dropdown-item setting" type="button">Action</button></li>
+                <li><button class="dropdown-item setting" type="button">Another action</button></li>
+                <li><button class="dropdown-item setting" type="button">Something else here</button></li>
               </ul>
             </div>
           </ul>
@@ -89,13 +89,13 @@
         <li> Guessing Time
           <ul>
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="btn btn-secondary dropdown-toggle setting" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                 Dropdown
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <li><button class="dropdown-item" type="button">Action</button></li>
-                <li><button class="dropdown-item" type="button">Another action</button></li>
-                <li><button class="dropdown-item" type="button">Something else here</button></li>
+                <li><button class="dropdown-item setting" type="button">Action</button></li>
+                <li><button class="dropdown-item setting" type="button">Another action</button></li>
+                <li><button class="dropdown-item setting" type="button">Something else here</button></li>
               </ul>
             </div>
           </ul>
@@ -103,7 +103,7 @@
 
         <li> Custom Questions
           <ul>
-            <textarea class="form-control" id="customQuestionInput" rows="3"></textarea>
+            <textarea class="form-control setting" id="customQuestionInput" rows="3"></textarea>
           </ul>
         </li>
 
@@ -118,6 +118,22 @@
           <ul id="player-list"></ul>
         </div>
         <button type="button" class="btn btn-primary" id="start-btn">Start Game!</button>
+      </div>
+    </div>
+
+    <div class="page" id="undetermined-card-display">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title" id="hotseat-player">Jun</h5>
+
+          <ul id="card-question-list">
+          </ul>
+
+          <button type="button" class="btn btn-primary" id="determine-questions-btn" readonly>
+            Submit!
+          </button>
+
+        </div>
       </div>
     </div>
 
@@ -138,7 +154,16 @@
 
 
     <div class="page" id="write-answer">
-
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title" id="hotseat-player">Hotseat Player: Jun</h5>
+          <h6 class="card-subtitle mb-2 text-muted" id="question-pack">Pack: General Questions</h6>
+          <p class="card-text" id="question">What movie protagonist are you most like?</p>
+          <textarea class="form-control" id="customQuestionInput" rows="3"></textarea>
+          <p class="spacer"></p>
+          <button type="button" class="btn btn-primary" id="answer-btn">Submit</button>
+        </div>
+      </div>
     </div>
 
     <div class="page" id="select-answer">

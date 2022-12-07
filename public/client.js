@@ -2,6 +2,8 @@
   
 let htmlElems = {};
 let pageElems = {};
+
+
 document.querySelectorAll('.page').forEach((pageElem) => pageElems[pageElem.id] = pageElem);
 
 function addHtmlElems(elemIDs) {
@@ -10,6 +12,7 @@ function addHtmlElems(elemIDs) {
   }
 }
 [ 'start-btn', 
+  'determine-questions-btn',
   'username-input', 
   'player-list', 
   'card-question-list',
@@ -17,6 +20,8 @@ function addHtmlElems(elemIDs) {
   'join-btn', 
   'join-link-text', 
   'room-code-input'].forEach((id) => htmlElems[id] = document.getElementById(id));
+
+
 
 htmlElems["username-input"].value = localStorage.getItem('nickname') ? JSON.parse(localStorage.getItem('nickname')) : '';
 
@@ -84,8 +89,9 @@ function joinRoomClicked() {
         setPage("room-lobby");
         game = data["game"];
         console.log("Congrats, you've joined room " + game.roomID + "! :)")
-        socket.once("startRound", startRound);
+        socket.once("displayUndetermined", displayUndetermined);
         gameUpdate();
+
       });
 
       socket.once("roomNotFound", data => {
@@ -115,7 +121,7 @@ function createRoomClicked() {
         game = data["game"];
         console.log("Congrats, you're hosting room " + game.roomID + "! :D");
         gameUpdate();
-        socket.once("startRound", startRound);
+        socket.once("displayUndetermined", displayUndetermined);
       });
 
     });
@@ -147,7 +153,7 @@ function startGameClicked() {
   
 }
 
-function startRound(data) {
+function displayUndetermined(data) {
   console.log("Round started, new card");
   game = data["game"];
   gameUpdate();
@@ -170,8 +176,9 @@ function startRound(data) {
     questionContainer.appendChild(questionHTML);
 
     htmlElems["card-question-list"].appendChild(questionContainer);
-
   }
+  
+  htmlElems["determine-questions-btn"].disabled = !isHotseatPlayer;
   
   if (game.settings.numDeterminedQuestions 
     === game.settings.numUndeterminedQuestions) {
@@ -186,7 +193,7 @@ function startRound(data) {
 
   card = data["card"];
   // TODO: front-end, update card-display html stuff (consider card.questionList)
-  setPage("card-display");
+  setPage("undetermined-card-display");
 }
 
 function gameUpdate() {
@@ -205,7 +212,6 @@ function playerListUpdate() {
       userHTML.innerHTML += "👑";
     }
     htmlElems["player-list"].appendChild(userHTML);
-
   }
 }
 
