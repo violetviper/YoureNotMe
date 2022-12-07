@@ -84,8 +84,8 @@ function joinRoomClicked() {
         setPage("room-lobby");
         game = data["game"];
         console.log("Congrats, you've joined room " + game.roomID + "! :)")
+        socket.once("startRound", startRound);
         gameUpdate();
-
       });
 
       socket.once("roomNotFound", data => {
@@ -115,6 +115,7 @@ function createRoomClicked() {
         game = data["game"];
         console.log("Congrats, you're hosting room " + game.roomID + "! :D");
         gameUpdate();
+        socket.once("startRound", startRound);
       });
 
     });
@@ -143,7 +144,7 @@ function startGameClicked() {
   setPage("loading");
 
   // TODO: repeat location of this line
-  socket.once("startRound", startRound);
+  
 }
 
 function startRound(data) {
