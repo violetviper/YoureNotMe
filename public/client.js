@@ -19,7 +19,10 @@ function addHtmlElems(elemIDs) {
   'host-btn', 
   'join-btn', 
   'join-link-text', 
-  'room-code-input'].forEach((id) => htmlElems[id] = document.getElementById(id));
+  'room-code-input',
+  'hotseat-player',
+  'customQuestionInput',
+  'card-answer-list'].forEach((id) => htmlElems[id] = document.getElementById(id));
 
 
 
@@ -131,8 +134,6 @@ function createRoomClicked() {
 
 function startGameClicked() {
   // get dict elements, for now we have defaults:
-  questionPackNames = ["general"];
-  customQuestions = []
 
   /* list of settings:
     - Question packs enabled
@@ -141,7 +142,8 @@ function startGameClicked() {
     - Question Timer
     - Guessing Timer
   */
-
+  game.settings.customQuestions = htmlElems['customQuestionInput'].value;
+  game.settings.chosenCardPacks = ["general"]; //fixme
   socket.emit("startGameClicked", {
     settings: game.settings,
     roomID : game.roomID
@@ -157,8 +159,9 @@ function displayUndetermined(data) {
   console.log("Round started, new card");
   game = data["game"];
   gameUpdate();
-  const isHotseatPlayer = player.nickname === game.hotseatPlayer  ;
+  const isHotseatPlayer = player.nickname === game.hotseatPlayer;
   
+  htmlElems["card-question-list"].innerHTML = "";
   for(const q of Object.entries(game.card.questionList)) {
     const questionInput = document.createElement("input");
     questionInput.type = "checkbox";
@@ -168,18 +171,57 @@ function displayUndetermined(data) {
     }
 
     const questionHTML = document.createElement("p");
-    questionHTML.innerHTML = q;
+    questionHTML.innerHTML = q[1];
     questionHTML.style.display = "inline";
 
     const questionContainer = document.createElement("li");
     questionContainer.appendChild(questionInput);
     questionContainer.appendChild(questionHTML);
+    questionContainer.classList.add("cardQuestionItem");
 
     htmlElems["card-question-list"].appendChild(questionContainer);
   }
   
+// TODO: force user to send 
+
   htmlElems["determine-questions-btn"].disabled = !isHotseatPlayer;
+  htmlElems["determine-questions-btn"].onclick = () => {
+    let determinedQuestions = [];
+    document.querySelectorAll(".cardQuestionItem").forEach((item)=>{
+      if (item.children[0].checked) determinedQuestions.push(item.children[1].innerHTML);
+    });
+    socket.emit("questionsChosenByHotseat", {determinedQuestions, roomID:game.roomID});
+
+    socket.once("startAnsweringQuestions", data => {
+      setPage("write-answer");
+      game = data["game"];
+
+      htmlElems["card-answer-list"].innerHTML = "";
+      console.log(game.card);
+      for(const q of Object.entries(game.card.questionList)) {
+        console.log(q);
+        const answerContainer = document.createElement("div");
+        answerContainer.classList.add("answer-container");
+        
+        answerContainer.style.display = "inline";
+
+        const questionHTML = document.createElement("p");
+        questionHTML.innerHTML = q[1];
+
+        const answer = document.createElement("input")
+        answer.type = "text";
+
+        answerContainer.appendChild(questionHTML);
+        answerContainer.appendChild(answer);
+
+        htmlElems["card-answer-list"].appendChild(answerContainer);
+      }
+
+    })
+  };
+  htmlElems["hotseat-player"].innerHTML = game.hotseatPlayer;
   
+
   if (game.settings.numDeterminedQuestions 
     === game.settings.numUndeterminedQuestions) {
     // skip undetermined

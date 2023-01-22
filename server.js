@@ -104,6 +104,16 @@ server.on('connection', client => {
 
   });
 
+  
+  client.on("questionsChosenByHotseat", (data) => {
+    const game = roomMap[data["roomID"]];
+    console.log(data["determinedQuestions"]);
+    game.card.questionList = data["determinedQuestions"];
+    server.to(data["roomID"]).emit("startAnsweringQuestions",
+      { game }
+    );
+  });
+
   // Disconnect handler
   client.on('disconnect', () => {
     console.log("fuck you guys im gone --" + client.id);

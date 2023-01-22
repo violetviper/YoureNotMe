@@ -109,7 +109,8 @@ class QuestionPack {
   constructor(questionPackNames = ["general"], customQuestions = "") {
     // TODO: error if num questions < rounds * minQuestionsPerRound
     // "Whats my name?, sdafsdf?"
-    this.questions = customQuestions.split(/\s*,\s*/);
+    this.questions = customQuestions ? customQuestions.split(/\s*,\s*/) : [];
+    console.log(this.questions);
     // Adds each selected question pack to questionpack object
     for (let i = 0; i < questionPackNames.length; i++) {
       this.questions = this.questions.concat([...questionList[questionPackNames[i]]]);
@@ -119,7 +120,7 @@ class QuestionPack {
 
   pickRandom = function(numQuestions) { // fixme im slow
     // assert n <= questions.length
-    const shuffled = [...this.questions].sort(() => 0.5 - Math.random)
+    const shuffled = [...this.questions].sort(() => 0.5 - Math.random())
     let returnedQuestions = shuffled.slice(0, numQuestions);
 
     // question modes: multi questions vs picking questions from list

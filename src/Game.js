@@ -22,6 +22,7 @@ class Game {
       customQuestions: "",
     };
     this.card;
+    
   }
 
   addPlayer = function(clientID, nickname) {
